@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Email Verification</h2>
+    {% if success %}
+        <div class="alert alert-success">Your email has been verified. You can now log in.</div>
+    {% else %}
+        <div class="alert alert-danger">Invalid or expired verification link.</div>
+    {% endif %}
+</div>
+{% endblock %}

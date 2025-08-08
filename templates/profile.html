@@ -1,19 +1,78 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Profile</h2>
-  <div style="display:flex; gap:18px; align-items:flex-start;">
+<div style="max-width: 800px; margin: 40px auto; font-family: Arial, sans-serif;">
+
+  <h2 style="color: #2e7d32; font-size: 2rem; font-weight: bold; margin-bottom: 20px;">
+    👤 My Profile
+  </h2>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div style="padding: 10px; margin-bottom: 15px; border-radius: 8px; font-size: 0.95rem;
+                    {% if category == 'error' %}
+                      background-color: #ffebee; color: #c62828;
+                    {% elif category == 'success' %}
+                      background-color: #e8f5e9; color: #2e7d32;
+                    {% else %}
+                      background-color: #fffde7; color: #f9a825;
+                    {% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
     <div>
       {% if user.profile_photo %}
-        <img src="{{ url_for('uploaded_file', filename=user.profile_photo) }}" style="width:200px; border-radius:8px;">
+        <img src="{{ url_for('uploaded_file', filename=user.profile_photo) }}" style="width:200px; height:200px; object-fit:cover; border-radius:8px; border: 2px solid #ccc;">
       {% else %}
-        <img src="https://via.placeholder.com/200" style="border-radius:8px;">
+        <img src="https://via.placeholder.com/200" style="border-radius:8px; border: 2px solid #ccc;">
       {% endif %}
     </div>
-    <div>
-      <p><strong>Name:</strong> {{ user.name }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Address:</strong> {{ user.address }}</p>
-      <p><strong>Occupation:</strong> {{ user.occupation }}</p>
+
+    <div style="flex: 1;">
+      <form action="{{ url_for('edit_profile') }}" method="post" enctype="multipart/form-data"
+            style="background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+
+        <div style="margin-bottom: 15px;">
+          <label for="name" style="display: block; font-weight: 600; margin-bottom: 6px;">Name</label>
+          <input type="text" name="name" id="name" value="{{ user.name }}" required
+                 style="width: 100%; padding: 10px; border: 1.5px solid #ccc; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label for="email" style="display: block; font-weight: 600; margin-bottom: 6px;">Email</label>
+          <input type="email" name="email" id="email" value="{{ user.email }}" required
+                 style="width: 100%; padding: 10px; border: 1.5px solid #ccc; border-radius: 8px;" readonly>
+          <small style="color: gray;">(Email cannot be changed)</small>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label for="address" style="display: block; font-weight: 600; margin-bottom: 6px;">Address</label>
+          <input type="text" name="address" id="address" value="{{ user.address }}"
+                 style="width: 100%; padding: 10px; border: 1.5px solid #ccc; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label for="occupation" style="display: block; font-weight: 600; margin-bottom: 6px;">Occupation</label>
+          <input type="text" name="occupation" id="occupation" value="{{ user.occupation }}"
+                 style="width: 100%; padding: 10px; border: 1.5px solid #ccc; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label for="profile_photo" style="display: block; font-weight: 600; margin-bottom: 6px;">Profile Photo</label>
+          <input type="file" name="profile_photo" id="profile_photo" accept="image/*">
+        </div>
+
+        <button type="submit"
+                style="background: #43a047; color: white; font-weight: 600; padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; transition: background 0.3s;"
+                onmouseover="this.style.background='#388e3c';" onmouseout="this.style.background='#43a047';">
+          Save Changes
+        </button>
+      </form>
     </div>
   </div>
+</div>
 {% endblock %}

@@ -6,6 +6,23 @@
     🔐 Login
   </h2>
 
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div style="padding: 10px; margin-bottom: 15px; border-radius: 8px; font-size: 0.95rem;
+                    {% if category == 'error' %}
+                      background-color: #ffebee; color: #c62828;
+                    {% elif category == 'success' %}
+                      background-color: #e8f5e9; color: #2e7d32;
+                    {% else %}
+                      background-color: #fffde7; color: #f9a825;
+                    {% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
   <form method="post" style="background: #f9f9f9; padding: 30px 25px; border-radius: 16px; box-shadow: 0 6px 18px rgba(0,0,0,0.1);">
     
     <div style="margin-bottom: 20px;">
@@ -15,11 +32,17 @@
              onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
     </div>
 
-    <div style="margin-bottom: 25px;">
+    <div style="margin-bottom: 15px;">
       <label for="password" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Password</label>
       <input id="password" name="password" type="password" required
              style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
              onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <div style="text-align: right; margin-bottom: 25px;">
+      <a href="{{ url_for('forgot_password') }}" style="color: #43a047; font-size: 0.9rem; font-weight: 500;">
+        Forgot Password?
+      </a>
     </div>
 
     <button type="submit"
