@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width: 400px; margin: 60px auto; font-family: Arial, sans-serif;">
+
+  <h2 style="text-align: center; color: #2e7d32; font-size: 2.5rem; margin-bottom: 30px; font-weight: bold;">
+    🔐 Login
+  </h2>
+
+  <form method="post" style="background: #f9f9f9; padding: 30px 25px; border-radius: 16px; box-shadow: 0 6px 18px rgba(0,0,0,0.1);">
+    
+    <div style="margin-bottom: 20px;">
+      <label for="email" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Email</label>
+      <input id="email" name="email" type="email" required
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <div style="margin-bottom: 25px;">
+      <label for="password" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Password</label>
+      <input id="password" name="password" type="password" required
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <button type="submit"
+            style="background: #43a047; color: white; font-weight: 700; padding: 14px; width: 100%; border: none; border-radius: 12px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(67, 160, 71, 0.6); transition: background-color 0.3s;"
+            onmouseover="this.style.background='#388e3c';" onmouseout="this.style.background='#43a047';">
+      Login
+    </button>
+  </form>
+
+  <div style="text-align: center; margin-top: 30px;">
+    <p style="color: #555; margin-bottom: 8px; font-size: 0.95rem;">
+      Don't have an account? <a href="{{ url_for('register') }}" style="color: #43a047; font-weight: 600;">Register here</a>.
+    </p>
+  </div>
+
+</div>
+{% endblock %}

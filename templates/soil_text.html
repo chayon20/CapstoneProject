@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .report-container {
+    max-width: 1400px;
+    margin: 40px auto;
+    font-family: Arial, sans-serif;
+
+    display: flex;              /* use flexbox */
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: nowrap;          /* no wrapping */
+  }
+
+  .nutrient-card {
+    flex: 1;                    /* equal width */
+    min-width: 0;               /* prevents overflow in flex */
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+    border: 3px solid transparent;
+  }
+  .nutrient-card:hover {
+    transform: translateY(-5px);
+  }
+
+  /* Status colors applied to card border */
+  .low { border-color: #ff4d4d; background: linear-gradient(to bottom, #fff5f5, #ffffff); }
+  .good { border-color: #4CAF50; background: linear-gradient(to bottom, #f6fff6, #ffffff); }
+  .high { border-color: #ff9800; background: linear-gradient(to bottom, #fff8f0, #ffffff); }
+
+  .nutrient-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px dashed #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+
+  .nutrient-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nutrient-name i {
+    font-size: 1.3rem;
+  }
+
+  .value-circle {
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    line-height: 65px;
+    border-radius: 50%;
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+  }
+  .nutrient-card:hover .value-circle {
+    transform: scale(1.05);
+  }
+
+  .status-badge {
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  .status-badge.low { background-color: #ffcccc; color: #b30000; }
+  .status-badge.good { background-color: #ccffcc; color: #006600; }
+  .status-badge.high { background-color: #ffe6cc; color: #b35900; }
+
+  .section-title {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-title i {
+    color: #2e7d32;
+  }
+
+  ul {
+    margin: 5px 0 10px 0;
+    padding-left: 20px;
+  }
+</style>
+
+<div style="text-align:center; margin-bottom: 30px;">
+  <h2 style="color: #2e7d32;">🌱 Soil Nutrient Analysis Report</h2>
+</div>
+
+{% if error %}
+  <p style="color: red; text-align: center;">{{ error }}</p>
+{% endif %}
+
+{% if report %}
+<div class="report-container">
+  {% for nutrient, data in report.items() %}
+  <div class="nutrient-card {% if data.status.lower() == 'low' %}low{% elif data.status.lower() == 'good' %}good{% else %}high{% endif %}">
+    <div class="nutrient-header">
+      <span class="nutrient-name">
+        {% if data.status.lower() == 'low' %}
+          <i>🔻</i>
+        {% elif data.status.lower() == 'good' %}
+          <i>✅</i>
+        {% else %}
+          <i>⚠️</i>
+        {% endif %}
+        {{ nutrient.capitalize() }}
+      </span>
+      <div class="value-circle">
+        {{ (nitrogen if nutrient == 'nitrogen' else phosphorus if nutrient == 'phosphorus' else potassium) }}
+      </div>
+    </div>
+
+    <div class="status-badge {% if data.status.lower() == 'low' %}low{% elif data.status.lower() == 'good' %}good{% else %}high{% endif %}">
+      {{ data.status }}
+    </div>
+
+    {% if data.status.lower() == 'low' %}
+      <div class="section-title"><i>🩺</i> Symptoms:</div>
+      <ul>
+        {% for symptom in data.symptoms_if_low %}
+        <li>{{ symptom }}</li>
+        {% endfor %}
+      </ul>
+
+      <div class="section-title"><i>💊</i> Fertilizer Recommendation:</div>
+      <p>{{ data.fertilizer_if_low }}</p>
+
+    {% elif data.status.lower() == 'good' %}
+      <div class="section-title"><i>💡</i> General Recommendation:</div>
+      <p>{{ data.recommendation }}</p>
+
+    {% elif data.status.lower() == 'high' %}
+      <div class="section-title"><i>🩺</i> Symptoms:</div>
+      <ul>
+        {% for symptom in data.symptoms_if_high %}
+        <li>{{ symptom }}</li>
+        {% endfor %}
+      </ul>
+
+      <div class="section-title"><i>🛠️</i> High Level Solution:</div>
+      <ul>
+        {% for solution in data.solution_if_high %}
+        <li>{{ solution }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+  <p style="text-align:center; margin-top: 20px;">Please input soil nutrient values to see the report.</p>
+{% endif %}
+{% endblock %}

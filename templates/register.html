@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width: 450px; margin: 50px auto; font-family: Arial, sans-serif;">
+
+  <h2 style="text-align: center; color: #2e7d32; font-size: 2.5rem; margin-bottom: 30px; font-weight: bold;">
+    📝 Registration
+  </h2>
+
+  <form method="post" enctype="multipart/form-data" style="background: #f9f9f9; padding: 30px 25px; border-radius: 16px; box-shadow: 0 6px 18px rgba(0,0,0,0.1);">
+
+    <div style="margin-bottom: 20px;">
+      <label for="name" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Name *</label>
+      <input id="name" name="name" required
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="email" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Email *</label>
+      <input id="email" name="email" type="email" required
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="address" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Address</label>
+      <input id="address" name="address"
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="occupation" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Occupation</label>
+      <input id="occupation" name="occupation"
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <div style="margin-bottom: 25px;">
+      <label for="profile_photo" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Profile Photo</label>
+      <input id="profile_photo" name="profile_photo" type="file" accept="image/*"
+             style="width: 100%; font-size: 1rem; cursor: pointer;">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="password" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Password *</label>
+      <input id="password" name="password" type="password" required
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <div style="margin-bottom: 30px;">
+      <label for="confirm_password" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Confirm Password *</label>
+      <input id="confirm_password" name="confirm_password" type="password" required
+             style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1.5px solid #ccc; border-radius: 10px; outline-offset: 2px; transition: border-color 0.3s;"
+             onfocus="this.style.borderColor='#43a047';" onblur="this.style.borderColor='#ccc';">
+    </div>
+
+    <button type="submit"
+            style="background: #43a047; color: white; font-weight: 700; padding: 16px; width: 100%; border: none; border-radius: 12px; font-size: 1.3rem; cursor: pointer; box-shadow: 0 4px 10px rgba(67, 160, 71, 0.6); transition: background-color 0.3s;"
+            onmouseover="this.style.background='#388e3c';" onmouseout="this.style.background='#43a047';">
+      Submit
+    </button>
+
+  </form>
+</div>
+{% endblock %}
