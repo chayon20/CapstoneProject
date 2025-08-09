@@ -27,7 +27,7 @@ app.config.update(
     MAIL_PORT=587,
     MAIL_USE_TLS=True,
     MAIL_USERNAME='pronab017das@gmail.com',
-    MAIL_PASSWORD='edwu szhc gvde pgcq'
+    MAIL_PASSWORD=''
 )
 
 mail = Mail(app)
@@ -332,5 +332,9 @@ def soil_report():
 def uploaded_file(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000)
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(debug=True)
