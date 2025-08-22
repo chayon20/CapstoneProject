@@ -2,63 +2,65 @@
 {% block content %}
 <style>
   .container {
-    max-width: 1100px;
-    margin: 40px auto;
+    max-width: 1500px;
+    margin: 50px auto;
     font-family: Arial, sans-serif;
   }
 
   h1 {
     text-align: center;
     color: #2e7d32;
-    margin-bottom: 35px;
+    margin-bottom: 18px;
     font-size: 2.2rem;
   }
 
+  .sub {
+    text-align: center;
+    color: #666;
+    margin-bottom: 28px;
+  }
+
   .sensor-grid {
-    display: flex;
-    justify-content: space-between;
-    gap: 25px;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 16px;
   }
 
   .sensor-card {
-    flex: 1;
-    padding: 40px; /* doubled padding */
+    padding: 18px;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 16px;
     box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     background: white;
   }
 
-  .nitrogen-card {
-    background: #e8f5e9; /* light green */
-  }
-  .phosphorus-card {
-    background: #f3e5f5; /* light purple */
-  }
-  .potassium-card {
-    background: #fff3e0; /* light orange */
-  }
+  .nitrogen-card { background: #e8f5e9; }
+  .phosphorus-card { background: #f3e5f5; }
+  .potassium-card  { background: #fff3e0; }
+  .moisture-card   { background: #e3f2fd; }
+  .temp-card       { background: #ffebee; }
+  .humidity-card   { background: #ede7f6; }
+  .ph-card         { background: #e0f7fa; }
 
   .sensor-icon {
-    font-size: 3.5rem; /* bigger icons */
-    margin-bottom: 15px;
+    font-size: 1.6rem;
+    margin-bottom: 6px;
     display: block;
   }
 
   label {
     display: block;
     font-weight: bold;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     color: #333;
-    font-size: 1.5rem;
+    font-size: 1.05rem;
   }
 
   input {
-    width: 140px; /* bigger input */
-    padding: 14px;
+    width: 120px;
+    padding: 10px;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 1.05rem;
     border: 2px solid #ccc;
     border-radius: 12px;
     background-color: white;
@@ -66,81 +68,285 @@
     color: #333;
   }
 
+  .row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 20px 0 6px;
+  }
+
   button {
     background: #2e7d32;
     color: #fff;
-    padding: 16px 35px;
+    padding: 12px 22px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 35px;
-    font-size: 1.3rem;
+    font-size: 1.05rem;
     transition: background 0.2s ease;
   }
+  button:hover { background: #256828; }
 
-  button:hover {
-    background: #256828;
+  .hint {
+    text-align: center;
+    margin-top: 6px;
+    color: #444;
+    font-style: italic;
   }
 
-  p.update-info {
-    text-align: center;
-    margin-top: 15px;
-    font-style: italic;
-    color: #555;
-    font-size: 1rem;
+  .water-badge {
+    display:inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background:#e3f2fd;
+    color:#0d47a1;
+    font-weight: 600;
+    border:1px solid #bbdefb;
+  }
+
+  .badge-danger {
+    background:#ffebee;
+    color:#b71c1c;
+    border-color:#ffcdd2;
+  }
+
+  .chart-wrap {
+    margin-top: 28px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    padding: 16px;
+  }
+
+  /* Responsive grid */
+  @media (max-width: 1200px) {
+    .sensor-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 800px) {
+    .sensor-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .sensor-grid { grid-template-columns: 1fr; }
   }
 </style>
 
 <div class="container">
-
-  <h1>🌿 Real-time Soil Nutrient Data</h1>
+  <h1>🌿 Real-time Soil & Environment</h1>
+  <p class="sub">Live values from ESP32. Stored in your database. Auto-updates every 5 seconds.</p>
 
   <form method="POST" action="{{ url_for('soil_report') }}" id="soilForm">
     <div class="sensor-grid">
       <div class="sensor-card nitrogen-card">
         <span class="sensor-icon">🟢</span>
-        <label for="nitrogen">Nitrogen (N)</label>
+        <label for="nitrogen">Nitrogen (N) mg/kg</label>
         <input type="number" step="0.01" id="nitrogen" name="nitrogen" readonly />
       </div>
+
       <div class="sensor-card phosphorus-card">
         <span class="sensor-icon">🟣</span>
-        <label for="phosphorus">Phosphorus (P)</label>
+        <label for="phosphorus">Phosphorus (P) mg/kg</label>
         <input type="number" step="0.01" id="phosphorus" name="phosphorus" readonly />
       </div>
+
       <div class="sensor-card potassium-card">
         <span class="sensor-icon">🟠</span>
-        <label for="potassium">Potassium (K)</label>
+        <label for="potassium">Potassium (K) mg/kg</label>
         <input type="number" step="0.01" id="potassium" name="potassium" readonly />
+      </div>
+
+      <div class="sensor-card moisture-card">
+        <span class="sensor-icon">💧</span>
+        <label for="moisture">Soil Moisture %</label>
+        <input type="number" step="0.01" id="moisture" name="moisture" readonly />
+      </div>
+
+      <div class="sensor-card temp-card">
+        <span class="sensor-icon">🌡️</span>
+        <label for="temperature">Temperature °C</label>
+        <input type="number" step="0.01" id="temperature" name="temperature" readonly />
+      </div>
+
+      <div class="sensor-card humidity-card">
+        <span class="sensor-icon">💦</span>
+        <label for="humidity">Humidity %</label>
+        <input type="number" step="0.01" id="humidity" name="humidity" readonly />
+      </div>
+
+      <div class="sensor-card ph-card">
+        <span class="sensor-icon">⚗️</span>
+        <label for="ph">pH</label>
+        <input type="number" step="0.01" id="ph" name="ph" readonly />
       </div>
     </div>
 
-    <div style="text-align:center;">
+    <div class="row-actions">
       <button type="submit">Analyze Nutrients</button>
+      <span id="waterBadge" class="water-badge">Checking soil moisture…</span>
     </div>
   </form>
 
-  <p class="update-info">
-    Values update every 5 seconds.
-  </p>
+  <div class="hint" id="lastSaved">Last saved: —</div>
 
+  <div class="chart-wrap">
+    <canvas id="liveChart" height="120"></canvas>
+  </div>
+
+  <div class="row-actions" style="margin-top:12px;">
+    <a href="{{ url_for('api_sensor_readings', limit=500) }}" target="_blank" style="text-decoration:none;">
+      <button type="button">Download Latest JSON</button>
+    </a>
+  </div>
 </div>
 
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  async function fetchSoilData() {
-    try {
-      const res = await fetch('{{ url_for("soil_data") }}');
-      if (!res.ok) throw new Error("Network error");
-      const data = await res.json();
+  const POLL_MS = 5000;
+  const MAX_POINTS = 60; // keep last 5 minutes @5s
 
-      document.getElementById('nitrogen').value = data.nitrogen;
-      document.getElementById('phosphorus').value = data.phosphorus;
-      document.getElementById('potassium').value = data.potassium;
-    } catch (error) {
-      console.error("Failed to fetch soil data:", error);
+  const el = (id) => document.getElementById(id);
+  const fields = ["nitrogen","phosphorus","potassium","moisture","temperature","humidity","ph"];
+
+  const dataSeries = {
+    nitrogen: [],
+    phosphorus: [],
+    potassium: [],
+    moisture: [],
+    temperature: [],
+    humidity: [],
+    ph: []
+  };
+  const labels = [];
+
+  const ctx = document.getElementById('liveChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label:'N (mg/kg)', data:dataSeries.nitrogen, borderWidth:2 },
+        { label:'P (mg/kg)', data:dataSeries.phosphorus, borderWidth:2 },
+        { label:'K (mg/kg)', data:dataSeries.potassium, borderWidth:2 },
+        { label:'Moisture (%)', data:dataSeries.moisture, borderWidth:2 },
+        { label:'Temp (°C)', data:dataSeries.temperature, borderWidth:2 },
+        { label:'Humidity (%)', data:dataSeries.humidity, borderWidth:2 },
+        { label:'pH', data:dataSeries.ph, borderWidth:2 }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        y: { beginAtZero: false },
+        x: { ticks: { maxRotation:0, autoSkip: true, maxTicksLimit: 10 } }
+      },
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+
+  function num(v) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  }
+  function fmt(v, digits = 2) {
+    const n = num(v);
+    return n === null ? "" : n.toFixed(digits);
+  }
+
+  function pushDataPoint(ts, reading) {
+    // Skip if any field is missing or NaN
+    const missing = fields.some(f => reading[f] === undefined || reading[f] === null || Number.isNaN(Number(reading[f])));
+    if (missing) return;
+
+    labels.push(new Date(ts).toLocaleTimeString());
+    fields.forEach(f => dataSeries[f].push(Number(reading[f])));
+
+    if (labels.length > MAX_POINTS) {
+      labels.shift();
+      fields.forEach(f => dataSeries[f].shift());
+    }
+    chart.update();
+  }
+
+  function updateCards(reading) {
+    // assign formatted values
+    el('nitrogen').value    = fmt(reading.nitrogen, 2);
+    el('phosphorus').value  = fmt(reading.phosphorus, 2);
+    el('potassium').value   = fmt(reading.potassium, 2);
+    el('moisture').value    = fmt(reading.moisture, 0);
+    el('temperature').value = fmt(reading.temperature, 1);
+    el('humidity').value    = fmt(reading.humidity, 1);
+    el('ph').value          = fmt(reading.ph, 2);
+
+    // water badge
+    const badge = el('waterBadge');
+    const moistureMin = Number(reading.moisture_min ?? 35);
+    const m = num(reading.moisture);
+    if (m === null) {
+      badge.textContent = "Waiting for moisture…";
+      badge.classList.remove('badge-danger');
+    } else if (m < moistureMin) {
+      badge.textContent = "💧 Soil is dry — give water";
+      badge.classList.add('badge-danger');
+    } else {
+      badge.textContent = "✅ Moisture OK";
+      badge.classList.remove('badge-danger');
+    }
+
+    // last saved
+    if (reading.saved_at) {
+      el('lastSaved').textContent = "Last saved: " + new Date(reading.saved_at).toLocaleString();
     }
   }
 
+  let pollMs = POLL_MS;
+  let backoff = 0;
+  let timer = null;
+
+  async function fetchSoilData() {
+    try {
+      const res = await fetch('{{ url_for("soil_data") }}', { cache: "no-store" });
+      if (res.status === 404) {
+        el('lastSaved').textContent = "Waiting for ESP32 to send first reading…";
+        return;
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const payload = await res.json();
+      // expected shape:
+      // { nitrogen, phosphorus, potassium, moisture, temperature, humidity, ph, saved_at, moisture_min }
+      updateCards(payload);
+      pushDataPoint(payload.saved_at || Date.now(), payload);
+
+      // success → reset backoff
+      pollMs = POLL_MS;
+      backoff = 0;
+      schedule();
+    } catch (error) {
+      console.error("Failed to fetch soil data:", error);
+      // exponential-ish backoff capped at 30s extra
+      backoff = Math.min(backoff + 1, 6);
+      pollMs = POLL_MS + backoff * 5000;
+      schedule();
+    }
+  }
+
+  function schedule() {
+    clearInterval(timer);
+    timer = setInterval(fetchSoilData, pollMs);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(timer);
+    } else {
+      fetchSoilData();
+      schedule();
+    }
+  });
+
+  // initial
   fetchSoilData();
-  setInterval(fetchSoilData, 5000);
+  schedule();
 </script>
 {% endblock %}
