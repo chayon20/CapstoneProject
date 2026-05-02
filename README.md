@@ -1,4 +1,4 @@
-# 🌾 Rice Disease Detection Using DL& Soil Health Monitoring
+# 🌾 Rice Disease Detection Using DL & Soil Health Monitoring
 
 ## 📌 Overview  
 This project integrates **Deep Learning (DL)** and **IoT-based soil monitoring** to support **precision agriculture**.  
@@ -61,7 +61,6 @@ By combining **computer vision** with **IoT sensors**, the system helps farmers 
 <p align="center">
   <sub>Figure 2: Full Project Setup</sub>
 </p>
-
 
 ---
 
@@ -129,25 +128,23 @@ Estimated project cost: **28,440 – 52,500 BDT**
 
 ---
 
+## 📝 Publication & Citation
+The methodology and findings of this project have been published in **Smart Agricultural Technology** (Elsevier).
 
+> **Title:** An explainable quantized transfer learning framework for multiclass rice disease detection with IoT-based soil monitoring  
+> **Authors:** Chayon Kumar Das, Suvro Kumar Das, Jul Jalal Al-Mamur Sayor, Md. Toukir Ahmed  
+> **Journal:** Smart Agricultural Technology, Volume 14, August 2026, 102136  
+> **DOI:** [10.1016/j.atech.2026.102136](https://doi.org/10.1016/j.atech.2026.102136)
 
-## 👨‍💻 Authors  
-- **Chayon Kumar Das** 
-- **Suvro Kumar Das** 
-- Supervised by: **Md Toukir Ahmed**, Assistant Professor, Dept. of IoT & Robotics Engineering, University of Frontier Technology, Bangladesh 
-
----
-
-## 📜 License  
-This project is developed for **academic and research purposes**.  
-Please cite the authors when using this work.
-### 📥 Installation  
-```bash
-# Clone repository
-git clone https://github.com/chayon20/CapstoneProject
-cd CapstoneProject
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the web app
-python app.py
+If you use this repository or find our work helpful in your research, please consider citing our paper:
+```bibtex
+@article{das2026explainable,
+  title={An explainable quantized transfer learning framework for multiclass rice disease detection with IoT-based soil monitoring},
+  author={Das, Chayon Kumar and Das, Suvro Kumar and Sayor, Jul Jalal Al-Mamur and Ahmed, Md. Toukir},
+  journal={Smart Agricultural Technology},
+  volume={14},
+  pages={102136},
+  year={2026},
+  publisher={Elsevier},
+  doi={10.1016/j.atech.2026.102136}
+}
